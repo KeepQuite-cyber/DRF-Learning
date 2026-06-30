@@ -16,8 +16,6 @@ def studentView(request):
         return Response(serializer.data , status=status.HTTP_200_OK)
     elif request.method=="POST":
         serializer = StudentSerializer(data=request.data)
-        print("Data Requested = " , request.data)
-        print("serializer = " , serializer)
         if serializer.is_valid():
             serializer.save()
             return Response(serializer.data , status=status.HTTP_201_CREATED)
@@ -54,3 +52,11 @@ class Employees(APIView):
         employees = Employee.objects.all()
         serializer = EmployeeSerializer(employees, many=True)
         return Response(serializer.data , status=status.HTTP_200_OK)
+    
+    def post(self , request):
+        serializer = EmployeeSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data , status=status.HTTP_201_CREATED)
+        else:
+            return Response(serializer.errors , status=status.HTTP_400_BAD_REQUEST)
